@@ -33,8 +33,7 @@ class OBNodeType(enum.Enum):
 
 class Ship():
     def __init__(self, image_path) -> None:
-        response = requests.get(image_path)
-        img = Image.open(BytesIO(response.content))
+        img = Image.open(open(image_path, "rb"))
         self.image_path = image_path
         self.image = img
         self.image_data = np.array(self.image.getdata())
@@ -299,5 +298,5 @@ class JSONEncoderWithBytes(json.JSONEncoder):
         return json.JSONEncoder.default(self, obj)
 
 def decode_ship_data(shippng):
-    json_data = json.dumps(Ship(shippng).data, cls=JSONEncoderWithBytes)
+    json_data = json.dumps(Ship(shippng).data, cls=JSONEncoderWithBytes, indent=4)
     return json_data
